@@ -1,0 +1,10 @@
+/home/learn/rsproject/msgnats-project/msgnats-server/target/debug/deps/futures_channel-33b1914aa412b4ab.rmeta: /root/.cargo/registry/src/mirrors.sjtug.sjtu.edu.cn-7a04d2510079875b/futures-channel-0.3.24/src/lib.rs /root/.cargo/registry/src/mirrors.sjtug.sjtu.edu.cn-7a04d2510079875b/futures-channel-0.3.24/src/lock.rs /root/.cargo/registry/src/mirrors.sjtug.sjtu.edu.cn-7a04d2510079875b/futures-channel-0.3.24/src/mpsc/mod.rs /root/.cargo/registry/src/mirrors.sjtug.sjtu.edu.cn-7a04d2510079875b/futures-channel-0.3.24/src/mpsc/queue.rs /root/.cargo/registry/src/mirrors.sjtug.sjtu.edu.cn-7a04d2510079875b/futures-channel-0.3.24/src/mpsc/sink_impl.rs /root/.cargo/registry/src/mirrors.sjtug.sjtu.edu.cn-7a04d2510079875b/futures-channel-0.3.24/src/oneshot.rs
+
+/home/learn/rsproject/msgnats-project/msgnats-server/target/debug/deps/futures_channel-33b1914aa412b4ab.d: /root/.cargo/registry/src/mirrors.sjtug.sjtu.edu.cn-7a04d2510079875b/futures-channel-0.3.24/src/lib.rs /root/.cargo/registry/src/mirrors.sjtug.sjtu.edu.cn-7a04d2510079875b/futures-channel-0.3.24/src/lock.rs /root/.cargo/registry/src/mirrors.sjtug.sjtu.edu.cn-7a04d2510079875b/futures-channel-0.3.24/src/mpsc/mod.rs /root/.cargo/registry/src/mirrors.sjtug.sjtu.edu.cn-7a04d2510079875b/futures-channel-0.3.24/src/mpsc/queue.rs /root/.cargo/registry/src/mirrors.sjtug.sjtu.edu.cn-7a04d2510079875b/futures-channel-0.3.24/src/mpsc/sink_impl.rs /root/.cargo/registry/src/mirrors.sjtug.sjtu.edu.cn-7a04d2510079875b/futures-channel-0.3.24/src/oneshot.rs
+
+/root/.cargo/registry/src/mirrors.sjtug.sjtu.edu.cn-7a04d2510079875b/futures-channel-0.3.24/src/lib.rs:
+/root/.cargo/registry/src/mirrors.sjtug.sjtu.edu.cn-7a04d2510079875b/futures-channel-0.3.24/src/lock.rs:
+/root/.cargo/registry/src/mirrors.sjtug.sjtu.edu.cn-7a04d2510079875b/futures-channel-0.3.24/src/mpsc/mod.rs:
+/root/.cargo/registry/src/mirrors.sjtug.sjtu.edu.cn-7a04d2510079875b/futures-channel-0.3.24/src/mpsc/queue.rs:
+/root/.cargo/registry/src/mirrors.sjtug.sjtu.edu.cn-7a04d2510079875b/futures-channel-0.3.24/src/mpsc/sink_impl.rs:
+/root/.cargo/registry/src/mirrors.sjtug.sjtu.edu.cn-7a04d2510079875b/futures-channel-0.3.24/src/oneshot.rs:

@@ -1,0 +1,11 @@
+/home/learn/rsproject/msgnats-project/msgnats-server/target/debug/deps/getrandom-ef3fc8af0888b6cb.rmeta: /root/.cargo/registry/src/mirrors.sjtug.sjtu.edu.cn-7a04d2510079875b/getrandom-0.2.7/src/lib.rs /root/.cargo/registry/src/mirrors.sjtug.sjtu.edu.cn-7a04d2510079875b/getrandom-0.2.7/src/error.rs /root/.cargo/registry/src/mirrors.sjtug.sjtu.edu.cn-7a04d2510079875b/getrandom-0.2.7/src/util.rs /root/.cargo/registry/src/mirrors.sjtug.sjtu.edu.cn-7a04d2510079875b/getrandom-0.2.7/src/error_impls.rs /root/.cargo/registry/src/mirrors.sjtug.sjtu.edu.cn-7a04d2510079875b/getrandom-0.2.7/src/util_libc.rs /root/.cargo/registry/src/mirrors.sjtug.sjtu.edu.cn-7a04d2510079875b/getrandom-0.2.7/src/use_file.rs /root/.cargo/registry/src/mirrors.sjtug.sjtu.edu.cn-7a04d2510079875b/getrandom-0.2.7/src/linux_android.rs
+
+/home/learn/rsproject/msgnats-project/msgnats-server/target/debug/deps/getrandom-ef3fc8af0888b6cb.d: /root/.cargo/registry/src/mirrors.sjtug.sjtu.edu.cn-7a04d2510079875b/getrandom-0.2.7/src/lib.rs /root/.cargo/registry/src/mirrors.sjtug.sjtu.edu.cn-7a04d2510079875b/getrandom-0.2.7/src/error.rs /root/.cargo/registry/src/mirrors.sjtug.sjtu.edu.cn-7a04d2510079875b/getrandom-0.2.7/src/util.rs /root/.cargo/registry/src/mirrors.sjtug.sjtu.edu.cn-7a04d2510079875b/getrandom-0.2.7/src/error_impls.rs /root/.cargo/registry/src/mirrors.sjtug.sjtu.edu.cn-7a04d2510079875b/getrandom-0.2.7/src/util_libc.rs /root/.cargo/registry/src/mirrors.sjtug.sjtu.edu.cn-7a04d2510079875b/getrandom-0.2.7/src/use_file.rs /root/.cargo/registry/src/mirrors.sjtug.sjtu.edu.cn-7a04d2510079875b/getrandom-0.2.7/src/linux_android.rs
+
+/root/.cargo/registry/src/mirrors.sjtug.sjtu.edu.cn-7a04d2510079875b/getrandom-0.2.7/src/lib.rs:
+/root/.cargo/registry/src/mirrors.sjtug.sjtu.edu.cn-7a04d2510079875b/getrandom-0.2.7/src/error.rs:
+/root/.cargo/registry/src/mirrors.sjtug.sjtu.edu.cn-7a04d2510079875b/getrandom-0.2.7/src/util.rs:
+/root/.cargo/registry/src/mirrors.sjtug.sjtu.edu.cn-7a04d2510079875b/getrandom-0.2.7/src/error_impls.rs:
+/root/.cargo/registry/src/mirrors.sjtug.sjtu.edu.cn-7a04d2510079875b/getrandom-0.2.7/src/util_libc.rs:
+/root/.cargo/registry/src/mirrors.sjtug.sjtu.edu.cn-7a04d2510079875b/getrandom-0.2.7/src/use_file.rs:
+/root/.cargo/registry/src/mirrors.sjtug.sjtu.edu.cn-7a04d2510079875b/getrandom-0.2.7/src/linux_android.rs:
