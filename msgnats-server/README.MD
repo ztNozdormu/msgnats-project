@@ -120,7 +120,7 @@
         buf: [u8; BUF_LEN], //消息解析缓冲区,如果消息体+消息头不超过512,直接用这个,超过了就必须另分配
         arg_len: usize,
         msg_buf: Option<Vec<u8>>,
-        //解析过程中受到新消息,那么 新消息的总长度是msg_total_len,已收到部分应该是msg_len
+        //解析过程中收到新消息,那么 新消息的总长度是msg_total_len,已收到部分应该是msg_len
         msg_total_len: usize,
         msg_len: usize,
         debug: bool,
