@@ -15,3 +15,19 @@
 //  * <message>\r\n
 // *
 // **/  TODO
+#[derive(Debug,Clone)]
+enum ParseState {
+    OpStart,
+    OpS,
+    OpSu,
+    OpSub,
+    OpSubSpace,
+    OpSubArg,
+    OpP,
+    OpPu,
+    OpPub, //pub argument
+    OpPubSpace,
+    OpPubArg,
+    OpMsg,  //pub message
+    OpMsgFull,
+}
