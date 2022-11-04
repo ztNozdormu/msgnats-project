@@ -66,3 +66,20 @@ pub struct Parser {
     msg_len: usize,
     debug: bool,
 }
+
+// TODO：解析器实现 
+
+impl Parser {
+    
+    pub fn new() -> Self {
+        Self {
+            state: ParseState::OpStart,
+            buf: [0;DEFAULT_BUF_LEN],
+            arg_len: 0,
+            msg_buf: None,
+            msg_total_len: 0,
+            msg_len: 0,
+            debug: false, 
+        }
+    }
+}
