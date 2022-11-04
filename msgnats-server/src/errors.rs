@@ -1,7 +1,7 @@
 use std::error::Error;
 use std::fmt::{Display,Formatter,Error as fmtError};
 
-type Result<T> = std::result::Result<T,NError>;
+pub(crate) type Result<T> = std::result::Result<T,NError>;
 
 pub const ERROR_PARSE: i32 = 1;
 pub const ERROR_MESSAGE_SIZE_TOO_LARGE: i32 = 2;
