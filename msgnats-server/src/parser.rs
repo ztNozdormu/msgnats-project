@@ -214,11 +214,19 @@ impl Parser {
                         self.state = OpMsgFull;
                     }
                 }
-                OpMsgFull => todo!(),
+                OpMsgFull => match b {
+                    '\r' => {}
+                    '\n' => {
+                        self.state = OpStart;
+                        let r = self.process_msg()?;
+                        return Ok((r, i + 1));
+                    }
+                    _ => parse_error!(),
+                },
             }
+            i += 1;
         }
-
-        todo!()
+        Ok((ParseResult::NoMsg, buf.len()))
     }
     //一种是消息体比较短,可以直接放在buf中,无需另外分配内存
     //另一种是消息体很长,无法放在buf中,额外分配了msg_buf空间
@@ -288,6 +296,7 @@ impl Parser {
         } else {
             &self.buf[self.arg_len..self.msg_len + self.msg_total_len]
         };
+
         let mut arg_buf = [""; 2];
         let mut arg_len = 0;
 
