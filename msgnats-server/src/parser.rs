@@ -15,9 +15,9 @@
 //  * <message>\r\n
 // *
 // **/
-use std::string::ParseError;
-
-use crate::errors::{NError, Result, ERROR_PARSE};
+use crate::errors::{
+    NError, Result, ERROR_MESSAGE_NONE, ERROR_MESSAGE_SIZE_TOO_LARGE, ERROR_PARSE,
+};
 
 // 定义错误宏
 #[macro_export]
@@ -148,18 +148,72 @@ impl Parser {
                     '\r' => {}
                     '\n' => {
                         //PUB top.stevenbai 5\r\n
+                        self.state = OpStart;
+                        let r = self.process_sub()?;
+                        return Ok((r, i + 1));
                     }
                     _ => {
-                        todo!()
-                        // self.add_arg(b as u8)?;
+                        self.add_arg(b as u8)?;
                     }
                 },
-                OpP => todo!(),
-                OpPu => todo!(),
-                OpPub => todo!(),
-                OpPubSpace => todo!(),
-                OpPubArg => todo!(),
-                OpMsg => todo!(),
+                OpP => match b {
+                    'U' => {
+                        self.state = OpPu;
+                    }
+                    _ => parse_error!(),
+                },
+                OpPu => match b {
+                    'B' => {
+                        self.state = OpPub;
+                    }
+                    _ => parse_error!(),
+                },
+                OpPub => match b {
+                    ' ' | '\t' => self.state = OpPubSpace,
+                    _ => parse_error!(),
+                },
+                OpPubSpace => match b {
+                    ' ' | '\t' => {}
+                    _ => {
+                        self.state = OpPubArg;
+                        self.arg_len = 0;
+                        continue;
+                    }
+                },
+                OpPubArg => match b {
+                    '\r' => {}
+                    '\n' => {
+                        //PUB top.stevenbai 5\r\n
+                        self.state = OpMsg;
+                        let size = self.get_message_size()?;
+                        // 空消息
+                        if size == 0 {
+                            return Err(NError::new(ERROR_MESSAGE_NONE));
+                        }
+                        //消息体长度不应该超过1M,防止Dos攻击
+                        if size > 1 * 1024 * 1024 {
+                            return Err(NError::new(ERROR_MESSAGE_SIZE_TOO_LARGE));
+                        }
+                        // 超过默认消息长度处理
+                        if size + self.arg_len > DEFAULT_BUF_LEN {
+                            if self.msg_buf.is_none() {
+                                self.msg_buf = Some(Vec::with_capacity(size));
+                            }
+                        }
+                        self.msg_total_len = size;
+                    }
+                    _ => {
+                        self.add_arg(b as u8);
+                    }
+                },
+                OpMsg => {
+                    // 消息长度 追加消息
+                    if self.msg_len < self.msg_total_len {
+                        self.add_msg(b as u8);
+                    } else {
+                        self.state = OpMsgFull;
+                    }
+                }
                 OpMsgFull => todo!(),
             }
         }
@@ -227,6 +281,36 @@ impl Parser {
         Ok(ParseResult::SubArg(sub_arg))
     }
 
+    //解析缓冲区中以及msg_buf中的形如stevenbai.top 5hello
+    fn process_msg(&self) -> Result<ParseResult> {
+        let msg = if self.msg_buf.is_some() {
+            self.msg_buf.as_ref().unwrap().as_slice()
+        } else {
+            &self.buf[self.arg_len..self.msg_len + self.msg_total_len]
+        };
+        let mut arg_buf = [""; 2];
+        let mut arg_len = 0;
+
+        let ss = unsafe { std::str::from_utf8_unchecked(&self.buf[0..self.arg_len]) };
+        for s in ss.split(" ") {
+            if s.len() == 0 {
+                continue;
+            }
+
+            if s.len() >= 2 {
+                parse_error!()
+            }
+            arg_buf[arg_len] = s;
+            arg_len += 1;
+        }
+        let pub_arg = PubArg {
+            subject: arg_buf[0],
+            size_buf: arg_buf[1],
+            size: self.msg_total_len,
+            msg,
+        };
+        Ok(ParseResult::PubArg(pub_arg))
+    }
     //从接收到的pub消息中提前解析出来消息的长度
     fn get_message_size(&self) -> Result<usize> {
         //缓冲区中形如top.stevenbai.top 5
