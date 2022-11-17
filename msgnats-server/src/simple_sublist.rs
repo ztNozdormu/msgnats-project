@@ -1,7 +1,11 @@
 use crate::client::ClientMessageSender;
 use crate::errors::Result;
 use futures::lock::Mutex;
-use std::{cmp::Ordering, sync::Arc};
+use std::{
+    cmp::Ordering,
+    collections::{BTreeSet, HashMap},
+    sync::Arc,
+};
 
 /**
 考虑到Trie的实现以及Cache的实现都是很琐碎,
@@ -97,4 +101,26 @@ pub trait SubListTrait {
     fn insert(&self, sub: ArcSubscription) -> Result<()>;
     fn remove(&self, sub: ArcSubscription) -> Result<()>;
     fn match_subject(&self, subject: &str) -> ArcSubResult;
+}
+// SimpleSubList中,BTreeSeet中的存放的是ArcSubscriptionWrapper,而不是ArcSubscriptionWrapper.
+// 这是有意为之的,因为我们在向BTreeSet中插入新的Sub的时候不需要关心他们真实的顺序,只是需要关心他们是否相同. 所以我们比较的对象是他们的地址而不是内容.
+// 但是因为孤儿原则的限制,我们不能为Arc实现Ord这个trait,只能再多一次wrapper, 相信我们代码中有不少为孤儿原则做出的让步.
+#[derive(Debug, Default)]
+pub struct SimpleSubList {
+    subs: HashMap<String, BTreeSet<ArcSubscriptionWrapper>>,
+    qsubs: HashMap<String, HashMap<String, BTreeSet<ArcSubscriptionWrapper>>>,
+}
+
+impl SubListTrait for SimpleSubList {
+    fn insert(&self, sub: ArcSubscription) -> Result<()> {
+        todo!()
+    }
+
+    fn remove(&self, sub: ArcSubscription) -> Result<()> {
+        todo!()
+    }
+
+    fn match_subject(&self, subject: &str) -> ArcSubResult {
+        todo!()
+    }
 }
