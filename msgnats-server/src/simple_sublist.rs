@@ -96,7 +96,10 @@ impl std::cmp::PartialOrd for ArcSubscriptionWrapper {
 // 定义ArcSubResult类型
 
 pub type ArcSubResult = Arc<SubResult>;
-
+// SubListTrait是他对外提供的服务接口,主要是
+// 1. 新增订阅 这个是当一个Client 发送sub消息到服务端的时候要处理的
+// 2. 删除订阅 这个是当一个Client发送 unsub消息到服务端的时候要处理的,不过因为我们不支持unsub,那就是连接断开的时候处理的.
+// 3. 查找相关订阅 这个是当一个client发送pub消息到服务端后,服务端要查找所有相关的订阅,然后把消息逐一转发给他们.
 pub trait SubListTrait {
     fn insert(&self, sub: ArcSubscription) -> Result<()>;
     fn remove(&self, sub: ArcSubscription) -> Result<()>;
@@ -112,11 +115,11 @@ pub struct SimpleSubList {
 }
 
 impl SubListTrait for SimpleSubList {
-    fn insert(&self, sub: ArcSubscription) -> Result<()> {
+    fn insert(&self, sub: Arc<SubScription>) -> Result<()> {
         todo!()
     }
 
-    fn remove(&self, sub: ArcSubscription) -> Result<()> {
+    fn remove(&self, sub: Arc<SubScription>) -> Result<()> {
         todo!()
     }
 
