@@ -1,8 +1,7 @@
-use std::{cmp::Ordering, env::consts, sync::Arc};
-
-use futures::lock::Mutex;
-
 use crate::client::ClientMessageSender;
+use crate::errors::Result;
+use futures::lock::Mutex;
+use std::{cmp::Ordering, sync::Arc};
 
 /**
 考虑到Trie的实现以及Cache的实现都是很琐碎,
@@ -88,4 +87,14 @@ impl std::cmp::PartialOrd for ArcSubscriptionWrapper {
     fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
         Some(self.cmp(other))
     }
+}
+
+// 定义ArcSubResult类型
+
+pub type ArcSubResult = Arc<SubResult>;
+
+pub trait SubListTrait {
+    fn insert(&self, sub: ArcSubscription) -> Result<()>;
+    fn remove(&self, sub: ArcSubscription) -> Result<()>;
+    fn match_subject(&self, subject: &str) -> ArcSubResult;
 }
