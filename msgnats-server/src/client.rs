@@ -1,5 +1,29 @@
+use std::sync::Arc;
+
 use tokio::io::{AsyncWriteExt, WriteHalf};
 use tokio::net::TcpStream;
+use tokio::sync::Mutex;
+
+use crate::server::ServerState;
+use crate::simple_sublist::SubListTrait;
+
+/**
+ * 定义client
+ */
+#[derive(Debug, Default)]
+pub struct Client<T: SubListTrait> {
+    sub_list: T,
+}
+
+impl<T: SubListTrait + Send + 'static> Client<T> {
+    pub fn process_connection(
+        cid: u64,
+        serv_state: Arc<Mutex<ServerState<T>>>,
+        conn: TcpStream,
+    ) -> Arc<Mutex<ClientMessageSender>> {
+        todo!()
+    }
+}
 
 #[derive(Debug)]
 pub struct ClientMessageSender {
