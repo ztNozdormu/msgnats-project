@@ -103,7 +103,7 @@ pub type ArcSubResult = Arc<SubResult>;
 pub trait SubListTrait {
     fn insert(&mut self, sub: ArcSubscription) -> Result<()>;
     fn remove(&mut self, sub: ArcSubscription) -> Result<()>;
-    fn match_subject(&self, subject: &str) -> ArcSubResult;
+    fn match_subject(&self, subject: &str) -> Result<ArcSubResult>;
 }
 // 订阅列表 SimpleSubList中,BTreeSeet中的存放的是ArcSubscriptionWrapper,而不是ArcSubscriptionWrapper.
 // 这是有意为之的,因为我们在向BTreeSet中插入新的Sub的时候不需要关心他们真实的顺序,只是需要关心他们是否相同. 所以我们比较的对象是他们的地址而不是内容.
@@ -169,7 +169,24 @@ impl SubListTrait for SimpleSubList {
     /**
      * 当一个client pub一个消息的时候需要查找相关的订阅者
      */
-    fn match_subject(&self, subject: &str) -> ArcSubResult {
-        todo!()
+    fn match_subject(&self, subject: &str) -> Result<ArcSubResult> {
+        let mut r: SubResult = Default::default();
+
+        if let Some(subs) = self.subs.get(subject) {
+            for sub in subs.iter() {
+                r.ppubs.push(sub.0.clone());
+            }
+        }
+
+        if let Some(qsubs) = self.qsubs.get(subject) {
+            for (_, subs) in qsubs.iter() {
+                let mut vec: Vec<ArcSubscription> = vec![];
+                for sub in subs {
+                    vec.push(sub.0.clone());
+                }
+                r.qpubs.push(vec);
+            }
+        }
+        Ok(Arc::new(r))
     }
 }
