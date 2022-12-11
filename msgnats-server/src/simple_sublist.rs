@@ -101,11 +101,11 @@ pub type ArcSubResult = Arc<SubResult>;
 // 2. 删除订阅 这个是当一个Client发送 unsub消息到服务端的时候要处理的,不过因为我们不支持unsub,那就是连接断开的时候处理的.
 // 3. 查找相关订阅 这个是当一个client发送pub消息到服务端后,服务端要查找所有相关的订阅,然后把消息逐一转发给他们.
 pub trait SubListTrait {
-    fn insert(&self, sub: ArcSubscription) -> Result<()>;
-    fn remove(&self, sub: ArcSubscription) -> Result<()>;
+    fn insert(&mut self, sub: ArcSubscription) -> Result<()>;
+    fn remove(&mut self, sub: ArcSubscription) -> Result<()>;
     fn match_subject(&self, subject: &str) -> ArcSubResult;
 }
-// SimpleSubList中,BTreeSeet中的存放的是ArcSubscriptionWrapper,而不是ArcSubscriptionWrapper.
+// 订阅列表 SimpleSubList中,BTreeSeet中的存放的是ArcSubscriptionWrapper,而不是ArcSubscriptionWrapper.
 // 这是有意为之的,因为我们在向BTreeSet中插入新的Sub的时候不需要关心他们真实的顺序,只是需要关心他们是否相同. 所以我们比较的对象是他们的地址而不是内容.
 // 但是因为孤儿原则的限制,我们不能为Arc实现Ord这个trait,只能再多一次wrapper, 相信我们代码中有不少为孤儿原则做出的让步.
 #[derive(Debug, Default)]
@@ -115,14 +115,32 @@ pub struct SimpleSubList {
 }
 
 impl SubListTrait for SimpleSubList {
-    fn insert(&self, sub: Arc<SubScription>) -> Result<()> {
+    /**
+     * 向subList中插入SubScription，通过地址来判断唯一性
+     */
+    fn insert(&mut self, sub: Arc<SubScription>) -> Result<()> {
+        if let Some(ref q) = sub.queue {
+            let qsubs = self.qsubs.entry(sub.subject.clone()).or_insert(Default::default());
+            let subs = qsubs.entry(q.clone()).or_insert(Default::default());
+            subs.insert(ArcSubscriptionWrapper(sub));
+        } else {
+            let subs = self
+                .subs
+                .entry(sub.subject.clone())
+                .or_insert(Default::default());
+            subs.insert(ArcSubscriptionWrapper(sub));
+        }
+        Ok(())
+    }
+    /**
+     * 当一个client断开链接的时候，删除所有相关的订阅
+     */
+    fn remove(&mut self, sub: Arc<SubScription>) -> Result<()> {
         todo!()
     }
-
-    fn remove(&self, sub: Arc<SubScription>) -> Result<()> {
-        todo!()
-    }
-
+    /**
+     * 当一个client pub一个消息的时候需要查找相关的订阅者
+     */
     fn match_subject(&self, subject: &str) -> ArcSubResult {
         todo!()
     }
