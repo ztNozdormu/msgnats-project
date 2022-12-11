@@ -120,7 +120,10 @@ impl SubListTrait for SimpleSubList {
      */
     fn insert(&mut self, sub: Arc<SubScription>) -> Result<()> {
         if let Some(ref q) = sub.queue {
-            let qsubs = self.qsubs.entry(sub.subject.clone()).or_insert(Default::default());
+            let qsubs = self
+                .qsubs
+                .entry(sub.subject.clone())
+                .or_insert(Default::default());
             let subs = qsubs.entry(q.clone()).or_insert(Default::default());
             subs.insert(ArcSubscriptionWrapper(sub));
         } else {
@@ -128,6 +131,7 @@ impl SubListTrait for SimpleSubList {
                 .subs
                 .entry(sub.subject.clone())
                 .or_insert(Default::default());
+            // 零成本抽象
             subs.insert(ArcSubscriptionWrapper(sub));
         }
         Ok(())
@@ -136,7 +140,31 @@ impl SubListTrait for SimpleSubList {
      * 当一个client断开链接的时候，删除所有相关的订阅
      */
     fn remove(&mut self, sub: Arc<SubScription>) -> Result<()> {
-        todo!()
+        if let Some(ref q) = sub.queue {
+            if let Some(qsubs) = self.qsubs.get_mut(&sub.subject) {
+                if let Some(subs) = qsubs.get_mut(q) {
+                    if subs.remove(&ArcSubscriptionWrapper(sub.clone())) {
+                        if subs.is_empty() {
+                            qsubs.remove(q);
+                        }
+                    }
+                }
+                if qsubs.is_empty() {
+                    // 不存在值 清空
+                    self.qsubs.remove(&sub.subject);
+                }
+            }
+        } else {
+            if let Some(subs) = self.subs.get_mut(&sub.subject) {
+                if subs.remove(&ArcSubscriptionWrapper(sub.clone())) {
+                    if subs.is_empty() {
+                        // 不存在值 清空
+                        self.subs.remove(&sub.subject);
+                    }
+                }
+            }
+        }
+        Ok(())
     }
     /**
      * 当一个client pub一个消息的时候需要查找相关的订阅者
